@@ -1,20 +1,36 @@
+function getContentByPromise(url){
+    return new Promise(function(resolve, reject) {
+        var xhr = new XMLHttpRequest()
+        xhr.open('GET', url, true)
+        xhr.onload = function() {
+            if (xhr.status == 200) {
+                const data = xhr.responseText
+                resolve(data)
+            } else {
+                reject(status)
+            }
+        }
+        xhr.onerror = function() {
+            reject(Error("Network Error"))
+        }
+        xhr.send()
+    });
+}
+
+
 ;((window) => {
-    const _ghFrameElement = document.querySelector('#ghFrame')
-    _ghFrameElement.addEventListener('load', (ev) => {
-        console.log(ev)
-    })
+    const _ghElement = document.querySelector('#ghFileContainer')
     const githubFileUrl = decodeURIComponent(window.location.search.match(/(\?|&)ghFileUrl\=([^&]*)/)[2])
-    if (_ghFrameElement && githubFileUrl) {
-        fetch(`https://cors.io/?${githubFileUrl}`, {
-            mode: 'no-cors'
-        })
+    if (_ghElement && githubFileUrl) {
+        getContentByPromise(`https://cors.io?${githubFileUrl}`)
         .then(function(response) {
-            console.log(response);
-            return response.json()
+            const htmlStr = response
+            const docParser = new DOMParser()
+            const docElement = docParser.parseFromString(htmlStr, 'text/html')
+            const fileElement = docElement.querySelector('.file')
+            _ghElement.appendChild(fileElement)
+        }, function(error) {
+            console.log(error)
         })
-        .then(function(myJson) {
-            console.log(JSON.stringify(myJson))
-        })
-        .catch(error => console.error('Error:', error));
     }
 })(window)
