@@ -17,18 +17,33 @@ function getContentByPromise(url){
     });
 }
 
+/*
+Raw: https://raw.githubusercontent.com/gdmgent-code/gdmgent-v2/master/functions/src/index.js
+Normal: https://gdmgent-code.github.io/canvas_github_code_wrap/index.html?ghFileUrl=https://github.com/gdmgent-code/gdmgent-v2/blob/master/functions/src/index.js
+*/
+
 
 ;((window) => {
     const _ghElement = document.querySelector('#ghFileContainer')
     const githubFileUrl = decodeURIComponent(window.location.search.match(/(\?|&)ghFileUrl\=([^&]*)/)[2])
+    const codeType = decodeURIComponent(window.location.search.match(/(\?|&)codeType\=([^&]*)/)[2])
     if (_ghElement && githubFileUrl) {
         getContentByPromise(`https://cors.io?${githubFileUrl}`)
         .then(function(response) {
             const htmlStr = response
-            const docParser = new DOMParser()
+            /*const docParser = new DOMParser()
             const docElement = docParser.parseFromString(htmlStr, 'text/html')
             const fileElement = docElement.querySelector('.file')
-            _ghElement.appendChild(fileElement)
+            _ghElement.appendChild(fileElement)*/
+            _ghElement.innerHTML = `
+            <pre>
+                <code class="javascript">
+                    ${htmlStr}
+                </code>
+            </pre>
+            `
+            hljs.initHighlightingOnLoad()
+
         }, function(error) {
             console.log(error)
         })
