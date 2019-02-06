@@ -24,6 +24,9 @@ Normal: https://gdmgent-code.github.io/canvas_github_code_wrap/index.html?ghFile
 
 
 ;((window) => {
+    hljs.initHighlightingOnLoad()
+    hljs.initLineNumbersOnLoad()
+
     const _ghElement = document.querySelector('#ghFileContainer')
     const githubFileUrl = decodeURIComponent(window.location.search.match(/(\?|&)ghFileUrl\=([^&]*)/)[2])
     const codeType = decodeURIComponent(window.location.search.match(/(\?|&)codeType\=([^&]*)/)[2])
@@ -42,7 +45,8 @@ Normal: https://gdmgent-code.github.io/canvas_github_code_wrap/index.html?ghFile
                 </code>
             </pre>
             `
-            hljs.initHighlightingOnLoad()
+            hljs.highlightBlock(_ghElement)
+            //hljs.lineNumbersBlock(_ghElement)
 
         }, function(error) {
             console.log(error)
