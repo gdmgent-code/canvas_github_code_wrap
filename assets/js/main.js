@@ -5,7 +5,7 @@
     })
     const githubFileUrl = decodeURIComponent(window.location.search.match(/(\?|&)ghFileUrl\=([^&]*)/)[2])
     if (_ghFrameElement && githubFileUrl) {
-        fetch(`http://cors.io/?${githubFileUrl}`, {
+        fetch(`https://cors.io/?${githubFileUrl}`, {
             mode: 'cors',
             headers: {
                 'Access-Control-Allow-Origin':'*',
